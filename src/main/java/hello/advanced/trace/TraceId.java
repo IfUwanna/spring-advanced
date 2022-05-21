@@ -20,7 +20,7 @@ public class TraceId {
     }
 
     public TraceId createPreviousId() {
-        return new TraceId(id, level + 1); // 동일 id에 level만 하나 감소!
+        return new TraceId(id, level - 1); // 동일 id에 level만 하나 감소!
     }
 
     public boolean isFirestLevel(){
