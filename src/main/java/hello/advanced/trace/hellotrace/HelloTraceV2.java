@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * packageName    : hello.advanced.trace.hellotrace
- * fileName       : HelloTraceV1
+ * fileName       : HelloTraceV2
  * author         : Jihun Park
  * date           : 2022/05/22
  * description    :
@@ -18,28 +18,39 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-public class HelloTraceV1 {
+public class HelloTraceV2 {
 
     private static final String START_PREFIX = "-->";
     private static final String COMPLETE_PREFIX = "<--";
     private static final String EX_PREFIX = "<X-";
 
     /**
-     [796bccd9] OrderController.request()
-     [796bccd9] |-->OrderService.orderItem()
-     [796bccd9] |   |-->OrderRepository.save()
-     [796bccd9] |   |<--OrderRepository.save() time=1004ms
-     [796bccd9] |<--OrderService.orderItem() time=1014ms
-     [796bccd9] OrderController.request() time=1016ms
-     */
+    [796bccd9] OrderController.request()
+    [796bccd9] |-->OrderService.orderItem()
+    [796bccd9] |   |-->OrderRepository.save()
+    [796bccd9] |   |<--OrderRepository.save() time=1004ms
+    [796bccd9] |<--OrderService.orderItem() time=1014ms
+    [796bccd9] OrderController.request() time=1016ms
+    */
 
-    //[796bccd9] |-->OrderService.orderItem()
+    // [796bccd9] |   |<--OrderRepository.save() time=1004ms
     public TraceStatus begin(String message){
+
         TraceId traceId = new TraceId();
         Long startTimeMs = System.currentTimeMillis();
         log.info("[{}] {}{}", traceId.getId(), addSpace(START_PREFIX, traceId.getLevel()), message);
         return new TraceStatus(traceId,startTimeMs,message);
     };
+
+    //V2에서 추가. 두번째부터는 이걸로 호출!! 이전 컨텍스트를 받아서 다음 ID를 구함.
+    public TraceStatus beginSync(TraceId beforeTraceId, String message){
+
+        TraceId nextId = beforeTraceId.createNextId();
+        Long startTimeMs = System.currentTimeMillis();
+        log.info("[{}] {}{}", nextId.getId(), addSpace(START_PREFIX, nextId.getLevel()), message);
+        return new TraceStatus(nextId,startTimeMs,message);
+    };
+
 
     //[796bccd9] |   |<--OrderRepository.save() time=1004ms
     public void end(TraceStatus status){
