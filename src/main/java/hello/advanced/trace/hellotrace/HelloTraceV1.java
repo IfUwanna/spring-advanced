@@ -53,7 +53,8 @@ public class HelloTraceV1 {
     }
 
     private void complete(TraceStatus status, Exception e) { Long stopTimeMs = System.currentTimeMillis();
-        long resultTimeMs = stopTimeMs - status.getStartTimeMs(); TraceId traceId = status.getTraceId();
+        long resultTimeMs = stopTimeMs - status.getStartTimeMs();
+        TraceId traceId = status.getTraceId();
         if (e == null) {
             log.info("[{}] {}{} time={}ms", traceId.getId(), addSpace(COMPLETE_PREFIX, traceId.getLevel()), status.getMessage(), resultTimeMs);
         } else {
