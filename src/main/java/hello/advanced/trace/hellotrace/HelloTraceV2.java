@@ -40,7 +40,7 @@ public class HelloTraceV2 {
         Long startTimeMs = System.currentTimeMillis();
         log.info("[{}] {}{}", traceId.getId(), addSpace(START_PREFIX, traceId.getLevel()), message);
         return new TraceStatus(traceId,startTimeMs,message);
-    };
+    }
 
     //V2에서 추가. 두번째부터는 이걸로 호출!! 이전 컨텍스트를 받아서 다음 ID를 구함.
     public TraceStatus beginSync(TraceId beforeTraceId, String message){
@@ -49,13 +49,13 @@ public class HelloTraceV2 {
         Long startTimeMs = System.currentTimeMillis();
         log.info("[{}] {}{}", nextId.getId(), addSpace(START_PREFIX, nextId.getLevel()), message);
         return new TraceStatus(nextId,startTimeMs,message);
-    };
+    }
 
 
     //[796bccd9] |   |<--OrderRepository.save() time=1004ms
     public void end(TraceStatus status){
         complete(status, null);
-    };
+    }
 
 
     //[b7119f27] | |<X-OrderRepository.save() time=0ms ex=java.lang.IllegalStateException: 예외 발생!
