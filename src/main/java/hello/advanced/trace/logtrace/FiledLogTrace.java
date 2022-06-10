@@ -11,7 +11,7 @@ public class FiledLogTrace implements LogTrace{
     private static final String COMPLETE_PREFIX = "<--";
     private static final String EX_PREFIX = "<X-";
 
-    private TraceId traceIdHolder; // tracdId 동기화 (V2 파라미터 전달 대체). 동시성 이슈발생
+    private TraceId traceIdHolder; // tracdId 동기화 (V2 파라미터 전달 대체). 동시성 이슈발생!!!!
 
     /** tracae Id 시작, +1 */
     private void syncTraceId(){
